@@ -1,11 +1,7 @@
-import { serverFetch } from '@/lib/serverFetch'
+import { authFetch } from '@/lib/authFetch'
 
 export default async function DashboardPage() {
-  const res = await serverFetch('/api/profile')
-  if (res.status === 401) {
-    // TODO グローバルページエラーハンドリング
-    return <p>You must be logged in to view this page</p>
-  }
+  const res = await authFetch('/profile')
   const data: {
     id: string
     name: string

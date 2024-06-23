@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
 import { prisma } from '@/prisma'
 import { z } from 'zod'
-import { SchemaValidationErrorBag } from '@/lib/SchemaValidationError'
-import { createToken } from '../lib/session'
+import { SchemaValidationErrorBag } from '../lib/SchemaValidationError'
+import { createSession } from '../lib/session'
 
 const LoginFormSchema = z.object({
   email: z.string().email(),
@@ -37,9 +37,13 @@ export async function POST(request: Request) {
         { status: 401 }
       )
     }
-    const token = createToken({ userId: user.id })
+    const { accessToken, refreshToken } = await createSession({
+      userId: user.id
+    })
     return Response.json({
-      accessToken: token
+      userId: user.id,
+      accessToken: accessToken,
+      refreshToken: refreshToken
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

@@ -1,9 +1,9 @@
 import { NextRequest } from 'next/server'
-import { getSessionUser } from '../lib/session'
+import { getServerSessionUser } from '../lib/session'
 import { withErrorHandler } from '../lib/ErrorHandler'
 
 export const GET = withErrorHandler(async (request: NextRequest) => {
-  const user = await getSessionUser()
+  const user = await getServerSessionUser()
 
   return Response.json({
     id: user.id,

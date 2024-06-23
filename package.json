@@ -9,6 +9,7 @@
     "lint": "next lint",
     "make:migration": "prisma migrate dev --create-only && prisma generate",
     "migrate": "prisma migrate deploy",
+    "rollback": "prisma migrate resolve --rolled-back",
     "seed": "ts-node -P tsconfig.script.json prisma/seeders/seed.ts"
   },
   "dependencies": {

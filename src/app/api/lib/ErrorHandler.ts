@@ -1,13 +1,15 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { Unauthorized } from './Unauthorized'
+type RouteHandler = (
+  request: NextRequest,
+  ...args: any[]
+) => Promise<NextResponse> | NextResponse | Promise<Response> | Response
 
-function withErrorHandler(fn: any) {
-  return async function (request: any, ...args: any) {
+function withErrorHandler(handler: RouteHandler) {
+  return async function (request: NextRequest, ...args: any[]) {
     try {
-      return await fn(request, ...args)
+      return await handler(request, ...args)
     } catch (error) {
-      console.log('error')
-      console.log(error)
       if (error instanceof Unauthorized) {
         // Respond with a 401 Unauthorized
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })

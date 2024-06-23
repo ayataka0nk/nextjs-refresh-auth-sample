@@ -21,8 +21,15 @@ export const loginFormAction = async (
     credentials: 'include'
   })
   if (result.status === 200) {
-    const { accessToken } = await result.json()
-    cookies().set('accessToken', accessToken)
+    const { userId, accessToken, refreshToken } = await result.json()
+
+    cookies().set('accessToken', accessToken, {
+      sameSite: 'strict',
+      secure: true,
+      expires: new Date(Date.now() + 1000 * 10)
+    })
+    cookies().set('refreshToken', refreshToken)
+    cookies().set('userId', userId)
     redirect('/dashboard')
   } else if (result.status === 401) {
     return {
