@@ -1,4 +1,5 @@
 import { authFetch } from '@/lib/authFetch'
+import { Profile } from './Profile'
 
 export default async function DashboardPage() {
   const res = await authFetch('/profile')
@@ -13,6 +14,7 @@ export default async function DashboardPage() {
       <h1>Dashboard</h1>
       <p>Welcome to the dashboard</p>
       <p>Your session ID is {data.id}</p>
+      <Profile />
     </div>
   )
 }
